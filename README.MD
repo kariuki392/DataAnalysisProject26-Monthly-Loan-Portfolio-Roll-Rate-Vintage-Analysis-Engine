@@ -386,3 +386,135 @@ roll_rate_vintage_engine/
 | 14 | Executive Summary | — | Print summary statistics & key metrics |
 
 ---
+
+## How to Run
+
+### Prerequisites
+```bash
+pip install pandas numpy matplotlib seaborn scipy scikit-learn nbformat nbconvert --break-system-packages
+python3 -m ipykernel install --user --name python3
+```
+
+### Execute Notebook
+
+```bash
+# Option 1: From command line (Jupyter)
+jupyter nbconvert --to notebook --execute roll_rate_vintage_engine.ipynb --output roll_rate_vintage_engine_output.ipynb
+
+# Option 2: Python API (ExecutePreprocessor)
+python3 << 'EOF'
+import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+
+with open('roll_rate_vintage_engine.ipynb') as f:
+    nb = nbformat.read(f, as_version=4)
+
+ep = ExecutePreprocessor(timeout=1800, kernel_name='python3')
+ep.preprocess(nb, {'metadata': {'path': './'}})
+
+with open('roll_rate_vintage_engine_output.ipynb', 'w') as f:
+    nbformat.write(nb, f)
+
+print('✓ Notebook executed and saved')
+EOF
+```
+
+### Output Verification
+```bash
+ls -lah *.png  # Check all 6 dashboard panels render
+du -sh roll_rate_vintage_engine.ipynb  # Executed notebook size
+```
+
+### Expected Runtime
+- **Total execution time:** 4–5 minutes (3.1M rows + Markov algebra + matplotlib rendering)
+- **Peak memory:** ~2.5 GB (pandas dataframe + transition matrix)
+- **Output size:** ~8–10 MB (notebook + 6 PNG charts)
+
+---
+
+## Portfolio Context
+
+This project **completes the collections & portfolio analytics track** within the broader data analytics portfolio:
+
+### Collections & Financial Crime Suite
+1. ✅ **AML Transaction Monitoring** — Rule-engine TXN flagging (Project 21)
+2. ✅ **Third-Party Risk Management** — Vendor/counterparty due diligence (Project 22)
+3. ✅ **Bundibugyo Ebola Surveillance** — Cross-border infectious disease tracking (Project 23)
+4. ✅ **EPRA Fuel Pricing & Subsidy Engine** — Macroeconomic pass-through modeling (Project 24)
+5. ✅ **IFRS 9 ECL & Capital Reserve Engine** — Expected credit loss & provisioning (Project 25)
+6. ✅ **Roll-Rate & Vintage Analysis Engine** — Collections portfolio analytics **(THIS PROJECT)**
+
+### Banking & Risk Analytics Specialization
+- **24 total projects** across general analytics, machine learning, and compliance
+- **Production-grade data pipelines** for credit risk, collections, AML, and regulatory reporting
+- **Synthetic data at scale** (100K–1M records) with realistic statistical properties
+- **Markov chains, XGBoost, LSTM, Bayesian methods** across portfolio analytics
+
+### GitHub Repository
+👉 **[github.com/kariuki392/DataAnalysisProject26-Monthly-Loan-Portfolio-Roll-Rate-Vintage-Analysis-Engine](https://github.com/kariuki392)**
+
+**Built by:** Gabriel Kariuki | **Nairobi, Kenya** | Class of 2026 (Riara University)  
+**Target Roles:** Junior Risk Analyst | Data Analyst (Risk & Compliance) | Collections Analytics  
+**Last Updated:** August 2026
+
+---
+
+## References & Regulatory Frameworks
+
+### Regulatory Standards
+- **IFRS 9 (International Financial Reporting Standard 9):** Expected Credit Loss measurement for financial instruments
+- **CECL (Current Expected Credit Loss):** U.S. GAAP equivalent for loan loss provisioning
+- **Basel III:** Standardized approach for credit risk capital requirements; counterparty risk management
+- **OCC Guidance on Credit Risk Management:** Delinquency monitoring, collections effectiveness
+- **FASB ASC 326:** Measurement of credit losses on financial instruments
+
+### Methodological References
+- **Jarrow, R. A., & Turnbull, S. M. (1995):** "Pricing derivatives on financial securities subject to credit risk." *Journal of Finance*, 50(1), 53–85.
+- **Yildirim, Y., & Booth, G. G. (2005):** "Modeling credit risk dynamics using Markov chain Monte Carlo." *Journal of Risk*, 7(4).
+- **Duffie, D., & Singleton, K. J. (2003):** *Credit Risk: Pricing, Measurement, and Management*. Princeton University Press.
+
+---
+
+## Appendix: Technical Notes for Practitioners
+
+### Extending the Engine
+
+**1. Time-Varying Transition Matrix** (Markov process extension)
+```python
+# Instead of static P, estimate P_t for each month t
+# Allows capturing seasonality, macro shocks, policy changes
+for t in monthly_snapshots:
+    P_t = estimate_transition_matrix(panel_df, month=t)
+    v_t = v_0 @ P_t  # Project using time-t matrix
+```
+
+**2. Hidden Markov Model (HMM)**
+```python
+# Observation states: {Paid, Delinquent, Default}
+# Hidden states: {Good_Credit, Deteriorating_Credit, High_Risk}
+# Emission probabilities: likelihood of delinquency given hidden state
+# Forward algorithm: compute likelihood of observed sequence
+```
+
+**3. Macroeconomic Scenario Integration**
+```python
+# Scale transition probabilities by macro variables
+# P_ij_scenario = P_ij_baseline × (1 + sensitivity × macro_shock)
+# Enables stress-testing under recession, unemployment spikes, rate hikes
+```
+
+**4. Multi-Period Collections Targeting**
+```python
+# Optimize collections allocation across 12 months
+# Maximize NPV of cured accounts subject to budget constraint
+# Use predicted cure probabilities from logistic model as input
+```
+
+---
+
+**END OF DOCUMENTATION**
+
+---
+
+*This project is part of Gabriel Kariuki's production-grade analytics portfolio,  
+demonstrating mastery of collections analytics, regulatory frameworks, and portfolio risk modeling.*
